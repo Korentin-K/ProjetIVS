@@ -9,22 +9,38 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations:[]
+)]
 class Building
 {
+    /* id du building**/
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Assert\id]
     private $id;
 
+    /* nom du building 
+     * ne peut pas être vide
+    **/
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $nomBuilding;
 
+    /** zip code du building 
+     * ne peut pas être vide
+    */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $zipCodeBuilding;
 
+    /**les différentes pièces du building */
     #[ORM\OneToMany(mappedBy: 'building', targetEntity: Piece::class)]
     private $pieces;
+
+    /* Les différentes fonctions get et set **/
 
     public function __construct()
     {
