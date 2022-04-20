@@ -7,11 +7,11 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations:[]
+    normalizationContext: ['groups'=>['read:collection']]
 )]
 class Building
 {
@@ -19,21 +19,21 @@ class Building
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Assert\id]
+    #[Groups(['read:collection'])]
     private $id;
 
     /* nom du building 
      * ne peut pas être vide
     **/
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank]
+    #[Groups(['read:collection'])]
     private $nomBuilding;
 
     /** zip code du building 
      * ne peut pas être vide
     */
     #[ORM\Column(type: 'integer')]
-    #[Assert\NotBlank]
+    #[Groups(['read:collection'])]
     private $zipCodeBuilding;
 
     /**les différentes pièces du building */

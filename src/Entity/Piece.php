@@ -6,35 +6,32 @@ use App\Repository\BuildingRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PieceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PieceRepository::class)]
-#[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations:[]
-)]
+#[ApiResource()]
 class Piece
 {
     /**id de la pièce */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Assert\id]
+    
     private $id;
 
     /** nom de la pièce */
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank]
+    
     private $nomPiece;
 
     /** nombre de personne dans la pièce */
     #[ORM\Column(type: 'integer')]
-    #[Assert\NotBlank]
+    
     private $nbPersonnePiece;
 
     /** lien vers le building */
     #[ORM\ManyToOne(targetEntity: Building::class, inversedBy: 'pieces')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull]
     private $building;
 
     /* Les différentes fonctions get et set **/
