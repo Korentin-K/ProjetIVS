@@ -11,7 +11,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups'=>['read:collection']]
+    normalizationContext: ['groups'=>['read:Building:collection']],
+    collectionOperations:[
+        'get' => [
+            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']]
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']]
+        ]
+    ]
 )]
 class Building
 {
@@ -19,25 +29,26 @@ class Building
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:collection'])]
+    #[Groups(['read:Building:collection','read:building'])]
     private $id;
 
     /* nom du building 
      * ne peut pas être vide
     **/
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:collection'])]
+    #[Groups(['read:Building:collection','read:building'])]
     private $nomBuilding;
 
     /** zip code du building 
      * ne peut pas être vide
     */
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:collection'])]
+    #[Groups(['read:Building:collection'])]
     private $zipCodeBuilding;
 
     /**les différentes pièces du building */
     #[ORM\OneToMany(mappedBy: 'building', targetEntity: Piece::class)]
+    #[Groups(['read:Building:item'])]
     private $pieces;
 
     /* Les différentes fonctions get et set **/
