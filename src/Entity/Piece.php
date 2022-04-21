@@ -7,17 +7,21 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PieceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Length;
 
 #[ORM\Entity(repositoryClass: PieceRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups'=>['read:Piece:collection']],
+    paginationItemsPerPage:5,
+    paginationMaximumItemsPerPage:5,
+    paginationClientItemsPerPage:true,
     collectionOperations: [
         'get' => [
             'normalization_context'=> ['groups' => ['read:Piece:collection','read:Piece:item','read:building']],
             'output_formats'=> [
                 'json' => ['application/json']
-            ]
-        ]
+                ]
+            ],
     ],
     itemOperations: [
         'get' => [
@@ -45,12 +49,14 @@ class Piece
 
     /** nombre de personne dans la pièce */
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:Piece:collection'])]
+    #[
+        Groups(['read:Piece:collection']),
+        Length(min:3)
+    ]
     private $nbPersonnePiece;
 
     /** lien vers le building */
     #[ORM\ManyToOne(targetEntity: Building::class, inversedBy: 'pieces')]
-    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:Piece:item'])]
     private $building;
 

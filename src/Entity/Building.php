@@ -8,19 +8,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\CountPersonBuildController;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
+
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups'=>['read:Building:collection']],
+    paginationItemsPerPage:5,
+    paginationMaximumItemsPerPage:5,
+    paginationClientItemsPerPage:true,
     collectionOperations:[
         'get' => [
-            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']]
+            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']],
+            'output_formats'=> [
+                'json' => ['application/json']
+                ]
+            ],
+        'countPersonBuilding'=>[
+            'method'=>'GET',
+            'path'=>'building/count',
+            'controller'=> CountPersonBuildController::class
         ]
+              
     ],
     itemOperations: [
         'get' => [
-            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']]
-        ]
+            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']],
+            'output_formats'=> [
+                'json' => ['application/json']
+            ]
+            ]
+            
     ]
 )]
 class Building
@@ -36,14 +56,20 @@ class Building
      * ne peut pas être vide
     **/
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:Building:collection','read:building'])]
+    #[
+        Groups(['read:Building:collection','read:building','write:building']),
+        Length(min:3)
+    ]
     private $nomBuilding;
 
     /** zip code du building 
      * ne peut pas être vide
     */
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:Building:collection'])]
+    #[
+        Groups(['read:Building:collection','write:building']),
+        Length(min:6,max:6)
+    ]
     private $zipCodeBuilding;
 
     /**les différentes pièces du building */
