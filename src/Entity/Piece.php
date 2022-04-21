@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Constraints\Length;
                 ],
                 'getNbPersonPiece'=>[
                     'method'=>'GET',
-                    'path'=>'piece/{nomPiece}/nbPerson',
+                    'path'=>'piece/{nomPiece}/{nomBuilding}/nbPerson',
                     'controller'=>getNbPersonPieceController::class,
                     'read'=>false,
                     'output_formats'=> [
@@ -67,6 +67,14 @@ use Symfony\Component\Validator\Constraints\Length;
                                 'type'=>'string',
                                 'required'=>true,
                                 'example'=>'Pièce n°1'
+                            ],
+                            [
+                                'name'=>'nomBuilding',
+                                'in'=>'path',
+                                'description'=>'le nom du building',
+                                'type'=>'string',
+                                'required'=>true,
+                                'example'=>'Building n°1'
                             ]
                         ],'responses'=>[
                             '200'=>[

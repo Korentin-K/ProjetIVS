@@ -17,7 +17,7 @@ class getNbPersonPieceController extends AbstractController
         
     }
 
-    public function __invoke(string $nomPiece): int
+    public function __invoke(string $nomPiece,string $nomBuilding)
     {
         /** sert à gérer si la pièce n'existe pas */
         if(!$nomPiece){
@@ -25,7 +25,27 @@ class getNbPersonPieceController extends AbstractController
                 'pas de batiment avec ce nom'
             );
         }
-        return $this->pieceRepository->findOneBy(['nomPiece'=>$nomPiece])->getNbPersonnePiece();
-        
+        $nombreDePersonne=0;
+        $nomPieceTrouve='';
+        $nomBuildingTrouve='';
+        $pieces=$this->pieceRepository->findBy(['nomPiece'=>$nomPiece]);
+        foreach($pieces as $piece)
+        {
+            $building=$piece->getBuilding();
+            if($building->getNomBuilding()==$nomBuilding)
+            {
+                $nombreDePersonne=$piece->getNbPersonnePiece();
+                $nomPieceTrouve=$piece->getNomPiece();
+                $nomBuildingTrouve=$building->getNomBuilding();
+            }
+        }
+        return $this->json(
+            [
+                'nom du Building'=>$nomBuildingTrouve,
+                'nom de la piece' => $nomPieceTrouve,
+                'nombre de personne'=>$nombreDePersonne
+
+            ]
+            );
     }
 }
