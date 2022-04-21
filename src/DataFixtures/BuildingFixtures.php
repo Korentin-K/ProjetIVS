@@ -12,7 +12,7 @@ class BuildingFixtures extends Fixture
     {
         for ($i = 1; $i <10; ++$i){
             $building= new Building;
-            $building->setNomBuilding('buiding'.$i);
+            $building->setNomBuilding('building'.$i);
             $building->setZipCodeBuilding(23455);
             $manager->persist($building);
         }

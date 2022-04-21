@@ -48,6 +48,7 @@ use Symfony\Component\Validator\Constraints\Length;
                             'required'=>true,
                             'example'=>'Building n°1'
                         ]
+                        
                     ],
                 ]
                 ],
@@ -60,7 +61,7 @@ use Symfony\Component\Validator\Constraints\Length;
                         'json' => ['application/json']
                     ],
                     'openapi_context'=>[
-                        'summary'=> 'récupérer les informations d\'un building',
+                        'summary'=> 'Donne le nombre de personnes par building',
                         'parameters'=>[
                             [
                                 'name'=>'nomBuilding',
@@ -70,7 +71,20 @@ use Symfony\Component\Validator\Constraints\Length;
                                 'required'=>true,
                                 'example'=>'Building n°1'
                             ]
-                        ],
+                        ],'responses'=>[
+                            '200'=>[
+                                'description'=> 'OK',
+                                'content'=>[
+                                    'application/json'=>[
+                                        'schema'=>[
+                                            'name'=>'nombre de personne',
+                                            'type'=>'integer',
+                                            'example'=>3
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
               

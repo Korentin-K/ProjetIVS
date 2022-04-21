@@ -18,7 +18,7 @@ class getNbPersonBuildController extends AbstractController
         
     }
 
-    public function __invoke(string $nomBuilding): int 
+    public function __invoke(string $nomBuilding)
     {
         $pieces=$this->buildingRepository->findOneBy(['nomBuilding'=>$nomBuilding])->getPieces();
         /** création d'une variable qui stock le calcul */
@@ -34,7 +34,11 @@ class getNbPersonBuildController extends AbstractController
                 'pas de building avec ce nom'
             );
         }
-        return $nombrePersonne;
+        return $this->json(
+            [
+                'nombre de personne'=>$nombrePersonne
+            ]
+            );
         /**$pieces[0]->getNbPersonnePiece();*/
     }
 }

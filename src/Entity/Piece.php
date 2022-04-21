@@ -68,7 +68,20 @@ use Symfony\Component\Validator\Constraints\Length;
                                 'required'=>true,
                                 'example'=>'Pièce n°1'
                             ]
-                        ],
+                        ],'responses'=>[
+                            '200'=>[
+                                'description'=> 'OK',
+                                'content'=>[
+                                    'application/json'=>[
+                                        'schema'=>[
+                                            'name'=>'nombre de personne',
+                                            'type'=>'integer',
+                                            'example'=>3
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
     ],
