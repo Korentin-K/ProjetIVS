@@ -22,6 +22,7 @@ class getByNomPieceController extends AbstractController
         $Piece=$this->pieceRepository->findBy(
             ['nomPiece'=>$nomPiece],
         );
+        /** sert à gérer si la pièce n'existe pas */
     if(!$nomPiece){
         throw $this->createNotFoundException(
             'pas de batiment avec ce nom'

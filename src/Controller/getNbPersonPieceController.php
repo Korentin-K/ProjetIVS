@@ -19,6 +19,12 @@ class getNbPersonPieceController extends AbstractController
 
     public function __invoke(string $nomPiece): int
     {
+        /** sert à gérer si la pièce n'existe pas */
+        if(!$nomPiece){
+            throw $this->createNotFoundException(
+                'pas de batiment avec ce nom'
+            );
+        }
         return $this->pieceRepository->findOneBy(['nomPiece'=>$nomPiece])->getNbPersonnePiece();
         
     }

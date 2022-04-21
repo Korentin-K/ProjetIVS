@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\CountPersonBuildController;
 use App\Controller\getByNomBuildController;
+use App\Controller\getNbPersonBuildController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Length;
 
@@ -49,7 +50,29 @@ use Symfony\Component\Validator\Constraints\Length;
                         ]
                     ],
                 ]
-            ]
+                ],
+                'getNbPersonBuild'=>[
+                    'method'=>'GET',
+                    'path'=>'building/{nomBuilding}/NbPersonBuild',
+                    'controller'=>getNbPersonBuildController::class,
+                    'read'=>false,
+                    'output_formats'=> [
+                        'json' => ['application/json']
+                    ],
+                    'openapi_context'=>[
+                        'summary'=> 'récupérer les informations d\'un building',
+                        'parameters'=>[
+                            [
+                                'name'=>'nomBuilding',
+                                'in'=>'path',
+                                'description'=>'le nom du building',
+                                'type'=>'string',
+                                'required'=>true,
+                                'example'=>'Building n°1'
+                            ]
+                        ],
+                    ]
+                ]
               
     ],
     itemOperations: [

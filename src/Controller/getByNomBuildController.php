@@ -21,9 +21,10 @@ class getByNomBuildController extends AbstractController
         $Building=$this->buildingRepository->findBy(
                 ['nomBuilding'=>$nomBuilding]
             );
+            /**sert à gérer si le building n'existe pas */
         if(!$nomBuilding){
             throw $this->createNotFoundException(
-                'pas de batiment avec ce nom'
+                'pas de building avec ce nom'
             );
         }
         return $Building;    

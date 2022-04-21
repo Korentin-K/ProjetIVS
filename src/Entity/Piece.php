@@ -101,7 +101,7 @@ class Piece
     /** nombre de personne dans la pièce */
     #[ORM\Column(type: 'integer')]
     #[
-        Groups(['read:Piece:collection']),
+        Groups(['read:Piece:collection','read:piece']),
         Length(min:3)
     ]
     private $nbPersonnePiece;
