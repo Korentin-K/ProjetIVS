@@ -9,39 +9,59 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\CountPersonBuildController;
+use App\Controller\getByNomBuildController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Length;
 
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups'=>['read:Building:collection']],
+    normalizationContext: ['groups'=>['read:Building:collection','read:Building:item','read:piece']],
     paginationItemsPerPage:5,
     paginationMaximumItemsPerPage:5,
     paginationClientItemsPerPage:true,
     collectionOperations:[
         'get' => [
-            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']],
             'output_formats'=> [
                 'json' => ['application/json']
-                ]
             ],
-        'countPersonBuilding'=>[
-            'method'=>'GET',
-            'path'=>'building/count',
-            'controller'=> CountPersonBuildController::class
-        ]
+            'openapi_context'=>[
+                'summary'=> 'récupérer la liste de building',]
+            ],
+            'getByNomBuilding'=>[
+                'method'=>'GET',
+                'path'=>'building/{nomBuilding}',
+                'controller'=>getByNomBuildController::class,
+                'read'=>false,
+                'output_formats'=> [
+                    'json' => ['application/json']
+                ],
+                'openapi_context'=>[
+                    'summary'=> 'récupérer les informations d\'un building',
+                    'parameters'=>[
+                        [
+                            'name'=>'nomBuilding',
+                            'in'=>'path',
+                            'description'=>'le nom du building',
+                            'type'=>'string',
+                            'required'=>true,
+                            'example'=>'Building n°1'
+                        ]
+                    ],
+                ]
+            ]
               
     ],
     itemOperations: [
         'get' => [
-            'normalization_context'=> ['groups' => ['read:Building:collection','read:Building:item','read:piece']],
             'output_formats'=> [
                 'json' => ['application/json']
-            ]
-            ]
-            
-    ]
+            ],
+            'openapi_context'=>[
+                'summary'=> 'récupérer un building avec son id',]
+            ],
+       
+        ]
 )]
 class Building
 {
@@ -142,4 +162,5 @@ class Building
 
         return $this;
     }
+  
 }

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\BuildingRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\getByNomPieceController;
+use App\Controller\getNbPersonPieceController;
 use App\Repository\PieceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -20,15 +22,64 @@ use Symfony\Component\Validator\Constraints\Length;
             'normalization_context'=> ['groups' => ['read:Piece:collection','read:Piece:item','read:building']],
             'output_formats'=> [
                 'json' => ['application/json']
-                ]
             ],
+            'openapi_context'=>[
+                'summary'=> 'récupérer la liste des pieces',]
+            
+            ],
+            'getByNomPiece'=>[
+                'method'=>'GET',
+                'path'=>'piece/{nomPiece}',
+                'controller'=>getByNomPieceController::class,
+                'read'=>false,
+                'output_formats'=> [
+                    'json' => ['application/json']
+                ],
+                'openapi_context'=>[
+                    'summary'=> 'récupérer les informations d\'une pièce',
+                    'parameters'=>[
+                        [
+                            'name'=>'nomPiece',
+                            'in'=>'path',
+                            'description'=>'le nom de la pièce',
+                            'type'=>'string',
+                            'required'=>true,
+                            'example'=>'Pièce n°1'
+                        ]
+                    ],
+                ]
+                ],
+                'getNbPersonPiece'=>[
+                    'method'=>'GET',
+                    'path'=>'piece/{nomPiece}/nbPerson',
+                    'controller'=>getNbPersonPieceController::class,
+                    'read'=>false,
+                    'output_formats'=> [
+                        'json' => ['application/json']
+                    ],
+                    'openapi_context'=>[
+                        'summary'=> 'récupérer le nombre de personnes dans une pièce',
+                        'parameters'=>[
+                            [
+                                'name'=>'nomPiece',
+                                'in'=>'path',
+                                'description'=>'le nom de la pièce',
+                                'type'=>'string',
+                                'required'=>true,
+                                'example'=>'Pièce n°1'
+                            ]
+                        ],
+                    ]
+                ]
     ],
     itemOperations: [
         'get' => [
             'normalization_context'=> ['groups' => ['read:Piece:collection','read:Piece:item','read:building']],
             'output_formats'=> [
                 'json' => ['application/json']
-            ]
+            ],
+            'openapi_context'=>[
+                'summary'=> 'récupérer une pièce avec son id',]
         ]
     ]
     
